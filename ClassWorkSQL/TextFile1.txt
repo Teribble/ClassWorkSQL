@@ -134,4 +134,47 @@
 --and Store.IdCity = City.Id
 
 -------------------------------------------------------------------------
+COUNT() 
+Подсчитывает число записей, в который выражение не имеет значение Null
+если в скобках написать *, то даже нулевые выведет
 
+--select count(*) as наименование_столбца
+--from наименование_таблицы
+
+as - псевдоним (select count(*) as [Псевдоним]
+
+distinct - выведет только уникальные
+--select count(distinct *) as наименование_столбца
+--from наименование_таблицы
+
+-- Количество товара в целом
+select * from Product
+
+select COUNT(*) As [Кол-во товара] from Product
+
+-- Посчитать кол-во категорий товара на складе в мск
+select COUNT(distinct Product.Name) as [Категории товара]
+from Product, City, Accounting, Store
+where City.Name = N'Moscow'
+and City.Id = Store.IdCity
+and Store.Id = Accounting.Id_Store
+and Accounting.Id_Product = Product.Id
+
+-- Количество складов в Ростове на Дону
+
+select COUNT(Store.Adress) as [Склады]
+from Store, City, Accounting
+where City.Name = N'Rostov'
+and City.Id = Store.IdCity
+and Store.Id = Accounting.Id_Store
+
+-- Количество брендов общее и в ростове на дону
+	По Москве
+select COUNT(Product.Brand) as [Бренды]
+from Store, City, Accounting, Product
+where City.Name = N'Moscow'
+and City.Id = Store.IdCity
+and Store.Id = Accounting.Id_Store
+and Accounting.Id_Product = Product.Id
+	Общее
+select COUNT(distinct Product.Brand) from Product

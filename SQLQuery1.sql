@@ -1,7 +1,14 @@
-﻿
---select Product.Name, City.Name, Product.Quantity, Store.Adress
---from Product, Store, City, Accounting
---where Product.Name = N'Сыр'
---and Product.Id = Accounting.Id_Product
---and Accounting.Id_Store = Store.Id
---and Store.IdCity = City.Id
+﻿select COUNT(Store.Adress) as [Склады]
+from Store, City, Accounting
+where City.Name = N'Rostov'
+and City.Id = Store.IdCity
+and Store.Id = Accounting.Id_Store
+
+select COUNT(distinct Product.Brand) from Product
+
+select COUNT(distinct Product.Brand) as [Бренды]
+from Store, City, Accounting, Product
+where City.Name = N'Moscow'
+and City.Id = Store.IdCity
+and Store.Id = Accounting.Id_Store
+and Accounting.Id_Product = Product.Id
