@@ -122,3 +122,16 @@
 --AND Product.Quantity > 100 AND Product.Quantity < 150
 -- После каждого энд, это новый фильтр к тому, что получилось до
 -------------------------------------------------------------------------
+
+-- Вывести город в котором есть определенный товар
+	-- Разбить по запросно
+
+--select Product.Name, City.Name, Product.Quantity, Store.Adress
+--from Product, Store, City, Accounting
+--where Product.Name = N'Сыр'
+--and Product.Id = Accounting.Id_Product
+--and Accounting.Id_Store = Store.Id
+--and Store.IdCity = City.Id
+
+-------------------------------------------------------------------------
+
