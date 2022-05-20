@@ -178,3 +178,73 @@ and Store.Id = Accounting.Id_Store
 and Accounting.Id_Product = Product.Id
 	Общее
 select COUNT(distinct Product.Brand) from Product
+
+--Кличество товара в категории молочки и стоимость
+меньше 200 рублей за единицу
+select COUNT(*) as [Молочко]
+from Product
+where Product.Price > 15
+AND Product.Name IN (N'Молоко', N'Сырок')
+
+-- Узнать минимальную цифру в таблице
+select MIN(Product.Quantity) as [MIN]
+from Product
+
+-- Узнать среднее число в табле
+select AVG(Product.Price) as [AVG]
+from Product
+
+-- Получить средннее цену молока, которая находится в мск
+select AVG(Product.Price) as [AVG MILK]
+from City, Accounting, Product, Store
+where Product.Name = N'Молоко'
+and Product.Id = Accounting.Id_Product
+and Accounting.Id_Store = Store.Id
+and Store.IdCity = City.Id
+and City.Name = 'Rostov'
+
+-- Вывести количество товара на каждом складе
+select City.Name + ' ' + Store.Adress, SUM(Product.Quantity)
+as [SUM]
+from Store, Product,Accounting, City
+where Product.Id = Accounting.Id_Product
+and Store.Id = Accounting.Id_Store
+and City.Id = Store.IdCity
+group by Store.Adress, City.Name
+
+-- Вывести все склады в которых есть товар и посчитать их кол-во
+select City.Name + ' ' + Store.Adress, SUM(Product.Quantity)
+as [Quantity]
+from Store, Product, Accounting, City
+where Product.Id = Accounting.Id_Product
+and Accounting.Id_Store = Store.Id
+and Store.IdCity = City.Id
+and Product.Name = N'Молоко'
+group by City.Name + ' ' + Store.Adress
+
+-- Получить кол-во складов в городе, в которых есть товар
+select City.Name + ' ' + Store.Adress, COUNT(Store.Id) as [Count store]
+from Store, Product, Accounting, City
+where Product.Name = N'Молоко'
+and Product.Id = Accounting.Id_Product
+and Accounting.Id_Store = Store.Id
+and Store.IdCity = City.Id
+group by City.Name + ' ' + Store.Adress
+
+-- Кол-во брендов молочных продуктов в городе (хуйня запрос, вложеность)
+select Product.Brand, COUNT(Product.Brand) as [Count]
+from Store, Product, Accounting, City
+where Product.Id = Accounting.Id_Product
+and Store.Id = Accounting.Id_Store
+and City.Id = Store.IdCity
+and City.Name = N'Rostov'
+and Product.Name in (N'Сырок',N'Молоко')
+group by Product.Brand
+
+-- Получить общее кол-во товаров каждого бренда
+select Product.Brand, SUM(Product.Quantity) as [Count]
+from Store, Product, Accounting, City
+where Product.Id = Accounting.Id_Product
+and Accounting.Id_Store = Store.Id
+and Store.IdCity = City.Id
+group by Product.Brand, Product.Quantity
